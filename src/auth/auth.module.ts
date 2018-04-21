@@ -11,13 +11,12 @@ import { JwtStrategy } from './passport/jwt.strategy';
 import { AuthController } from './controllers/auth.controller';
 import { UsersModule } from '../users/users.module';
 import { CQRSModule, CommandBus } from '@nestjs/cqrs';
-import { ValidateUserHandler } from './commands/validate-user.handler';
 import { ModuleRef } from '@nestjs/core';
 import { CreateTokenHandler } from './commands/create-token.handler';
 import { User } from '../users/entities/user.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-export const CommandHandlers = [CreateTokenHandler, ValidateUserHandler];
+export const CommandHandlers = [CreateTokenHandler];
 
 @Module({
   imports: [

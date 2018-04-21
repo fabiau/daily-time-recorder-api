@@ -1,7 +1,8 @@
-import { IsString, IsEmail, MinLength, MaxLength } from "class-validator";
+import { IsString, IsEmail, MinLength, MaxLength, IsNotEmpty } from "class-validator";
 
 export class RegisterUserRequest {
   @IsString()
+  @IsNotEmpty()
   @MinLength(3, {
     message: "O nome do usuário deve conter no mínimo 3 caracteres"
   })
@@ -11,6 +12,7 @@ export class RegisterUserRequest {
   readonly username: string;
 
   @IsString()
+  @IsNotEmpty()
   @MinLength(6, {
     message: "A senha do usuário deve conter no mínimo 6 caracteres"
   })
@@ -20,9 +22,11 @@ export class RegisterUserRequest {
   readonly password: string;
 
   @IsEmail()
+  @IsNotEmpty()
   readonly email: string;
 
   @IsString()
+  @IsNotEmpty()
   @MinLength(2, {
     message: "O nome do usuário deve conter no mínimo 2 caracteres"
   })
@@ -32,6 +36,7 @@ export class RegisterUserRequest {
   readonly firstName: string;
 
   @IsString()
+  @IsNotEmpty()
   @MinLength(2, {
     message: "O sobrenome do usuário deve conter no mínimo 2 caracteres"
   })
