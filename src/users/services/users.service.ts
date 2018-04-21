@@ -20,12 +20,4 @@ export class UsersService {
       new CreateUserCommand(username, password, email, firstName, lastName)
     );
   }
-
-  async findAll(): Promise<User[]> {
-    return await this.userRepository.find();
-  }
-
-  async getByUsername(username: string) : Promise<User> {
-    return await this.userRepository.findOne({ username });
-  }
 }

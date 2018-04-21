@@ -4,7 +4,7 @@
   "port": 5432,
   "username": "postgres",
   "password": "123",
+  "schema": "daily_time_recorder",
   "database": "postgres",
-  "entities": ["src/**/**.entity{.ts,.js}"],
-  "synchronize": true
+  "entities": ["src/**/**.entity{.ts,.js}"]
 }

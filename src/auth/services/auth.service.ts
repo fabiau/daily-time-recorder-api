@@ -8,22 +8,34 @@ import { ClientUserInformation } from '../interfaces/client-user-information';
 import { CommandBus } from '@nestjs/cqrs';
 import { ValidateUserCommand } from '../commands/validate-user.command';
 import { CreateTokenCommand } from '../commands/create-token.command';
+import { User } from '../../users/entities/user.entity';
+import { RegisterUserRequest } from '../requests/register-user.request';
+import { CreateUserCommand } from '../../users/commands/create-user.command';
+import { BaseService } from '../../common/services/base.service';
 
 @Component()
-export class AuthService {
-  constructor (private readonly commandBus: CommandBus) {
-
+export class AuthService extends BaseService {
+  constructor (commandBus: CommandBus) {
+    super(commandBus);
   }
 
-  async createToken(userLoginRequest: UserLoginRequest): Promise<AuthSuccessResponse> {
-    return await this.commandBus.execute(
-      new CreateTokenCommand(1, 'admin', 'admin@admin.io')
+  async register(request: RegisterUserRequest) {
+    const { username, password, email, firstName, lastName } = request;
+    const createdUser = await this.executeCommand(
+      new CreateUserCommand(username, password, email, firstName, lastName)
+    );
+    return await this.createToken(createdUser);
+  }
+
+  async createToken(user: User): Promise<AuthSuccessResponse> {
+    return await this.executeCommand(
+      new CreateTokenCommand(user.id, user.username, user.email)
     );
   }
 
   async validateUser(signedUser): Promise<boolean> {
-    return Boolean(await this.commandBus.execute(
-      new ValidateUserCommand(signedUser as ClientUserInformation)
+    return Boolean(await this.executeCommand(
+      new ValidateUserCommand(signedUser.id)
     ));
   }
 }

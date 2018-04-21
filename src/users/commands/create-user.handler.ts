@@ -3,21 +3,18 @@ import { CreateUserCommand } from "./create-user.command";
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "../entities/user.entity";
 import { Repository } from "typeorm";
+import { BaseCommandHandler } from "../../common/commands";
 
 @CommandHandler(CreateUserCommand)
-export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
-  constructor(@InjectRepository(User) private readonly userRepository: Repository<User>) {}
+export class CreateUserHandler extends BaseCommandHandler<CreateUserCommand> {
+  constructor(@InjectRepository(User) private readonly userRepository: Repository<User>) {
+    super();
+  }
 
-  async execute(command: CreateUserCommand, resolve: (value?) => void) {
-    const { username, password, email, firstName, lastName } = command;
-    const user = this.userRepository.create({
-      username,
-      password,
-      email,
-      firstName,
-      lastName
-    });
+  async executeCommand(command: CreateUserCommand) {
+    const user = { ...command, createDate: new Date() };
+    const insertResult = await this.userRepository.insert({ ...user });
 
-    resolve(user);
+    return Object.assign({ id: insertResult.identifiers[0].id }, user);
   }
 }

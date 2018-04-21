@@ -6,5 +6,5 @@ CREATE TABLE daily_time_recorder.users (
   first_name varchar(50) NOT NULL,
   last_name varchar(100) NOT NULL,
   create_date timestamp with time zone NOT NULL,
-  last_update_date timestamp with time zone
+  last_update_date timestamp with time zone NULL
 );

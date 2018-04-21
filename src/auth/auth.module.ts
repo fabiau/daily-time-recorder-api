@@ -14,11 +14,14 @@ import { CQRSModule, CommandBus } from '@nestjs/cqrs';
 import { ValidateUserHandler } from './commands/validate-user.handler';
 import { ModuleRef } from '@nestjs/core';
 import { CreateTokenHandler } from './commands/create-token.handler';
+import { User } from '../users/entities/user.entity';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 export const CommandHandlers = [CreateTokenHandler, ValidateUserHandler];
 
 @Module({
   imports: [
+    TypeOrmModule.forFeature([User]),
     UsersModule,
     CQRSModule
   ],
