@@ -13,6 +13,7 @@ import { CreateUserCommand } from '../../users/commands/create-user.command';
 import { BaseService } from '../../common/services/base.service';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { passwordEncrypt } from '../../common/utils/encryption';
 
 @Component()
 export class AuthService extends BaseService {
@@ -32,7 +33,9 @@ export class AuthService extends BaseService {
 
   async login(request: UserLoginRequest) {
     const { username, password } = request;
-    const user = await this.userRepository.findOne({ username, password });
+    const user = await this.userRepository.findOne(
+      { username, password: passwordEncrypt(password) }
+    );
     if (!user) {
       throw new UnauthorizedException();
     }

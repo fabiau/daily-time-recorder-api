@@ -4,6 +4,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "../entities/user.entity";
 import { Repository } from "typeorm";
 import { BaseCommandHandler } from "../../common/commands";
+import { passwordEncrypt } from "../../common/utils/encryption";
 
 @CommandHandler(CreateUserCommand)
 export class CreateUserHandler extends BaseCommandHandler<CreateUserCommand> {
@@ -12,7 +13,11 @@ export class CreateUserHandler extends BaseCommandHandler<CreateUserCommand> {
   }
 
   async executeCommand(command: CreateUserCommand) {
-    const user = { ...command, createDate: new Date() };
+    const user =
+      Object.assign(
+        { ...command, createDate: new Date() },
+        { password: passwordEncrypt(command.password) }
+      );
     const insertResult = await this.userRepository.insert({ ...user });
 
     return Object.assign({ id: insertResult.identifiers[0].id }, user);
