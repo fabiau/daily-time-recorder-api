@@ -1,6 +1,9 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, Unique } from 'typeorm';
+import { Analyst } from '../../forms/analysts/entities/analyst.entity';
 
 @Entity({ name: 'users' })
+@Unique(['username'])
+@Unique(['email'])
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
@@ -25,4 +28,7 @@ export class User {
 
   @Column('timestamp with time zone', { name: 'last_update_date' })
   lastUpdateDate?: Date;
+
+  @OneToMany(type => Analyst, analyst => analyst)
+  analysts: Analyst[];
 }

@@ -3,8 +3,6 @@ import { Component, UnauthorizedException } from '@nestjs/common';
 import { AuthSuccessResponse } from '../responses/auth-success.response';
 import { UserLoginRequest } from '../requests/user-login.request';
 import { JWT_SECRET } from '../constants';
-import { UsersService } from '../../users/services/users.service';
-import { ClientUserInformation } from '../interfaces/client-user-information';
 import { CommandBus } from '@nestjs/cqrs';
 import { CreateTokenCommand } from '../commands/create-token.command';
 import { User } from '../../users/entities/user.entity';

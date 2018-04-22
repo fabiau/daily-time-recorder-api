@@ -1,7 +1,6 @@
 import { Module, OnModuleInit } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
-import { UsersService } from './services/users.service';
 import { CreateUserHandler } from './commands/create-user.handler';
 import { ModuleRef } from '@nestjs/core';
 import { CommandBus, CQRSModule } from '@nestjs/cqrs';
@@ -14,10 +13,8 @@ export const CommandHandlers = [CreateUserHandler];
     CQRSModule
   ],
   components: [
-    UsersService,
     ...CommandHandlers,
   ],
-  exports: [UsersService],
 })
 export class UsersModule implements OnModuleInit {
   constructor(

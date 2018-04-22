@@ -9,7 +9,6 @@ import {
 import { AuthService } from './services/auth.service';
 import { JwtStrategy } from './passport/jwt.strategy';
 import { AuthController } from './controllers/auth.controller';
-import { UsersModule } from '../users/users.module';
 import { CQRSModule, CommandBus } from '@nestjs/cqrs';
 import { ModuleRef } from '@nestjs/core';
 import { CreateTokenHandler } from './commands/create-token.handler';
@@ -21,7 +20,6 @@ export const CommandHandlers = [CreateTokenHandler];
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]),
-    UsersModule,
     CQRSModule
   ],
   controllers: [AuthController],

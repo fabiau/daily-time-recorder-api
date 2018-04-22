@@ -10,8 +10,12 @@ export class BaseService {
   protected async executeCommand<T>(command: ICommand) {
     const result: CommandResult<any> = await this.commandBus.execute(command);
     if (result.type === CommandResultType.error) {
+      const error = (result as CommandFailureResult<Error>).data;
+      if (error instanceof HttpException)
+        throw error;
+
       throw new HttpException(
-        (result as CommandFailureResult<Error>).data.message,
+        error.message,
         HttpStatus.INTERNAL_SERVER_ERROR
       );
     }
