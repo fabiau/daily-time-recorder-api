@@ -8,8 +8,9 @@ import { AnalystsService } from './services/analysts.service';
 import { CreateAnalystHandler } from './commands/create-analyst.handler';
 import { ModuleRef } from '@nestjs/core';
 import { DeleteAnalystHandler } from './commands/delete-analyst.handler';
+import { UpdateAnalystHandler } from './commands/update-analyst.handler';
 
-export const CommandHandlers = [CreateAnalystHandler, DeleteAnalystHandler];
+export const CommandHandlers = [CreateAnalystHandler, DeleteAnalystHandler, UpdateAnalystHandler];
 
 @Module({
   imports: [

@@ -8,6 +8,8 @@ import { CreateAnalystRequest } from "../requests/create-analyst.request";
 import { User } from "../../../users/entities/user.entity";
 import { CreateAnalystCommand } from "../commands/create-analyst.command";
 import { DeleteAnalystCommand } from "../commands/delete-analyst.command";
+import { UpdateAnalystRequest } from "../requests/update-analyst.request";
+import { UpdateAnalystCommand } from "../commands/update-analyst.command";
 
 @Component()
 export class AnalystsService extends BaseService {
@@ -23,6 +25,13 @@ export class AnalystsService extends BaseService {
     const { name, email } = request;
     return await this.executeCommand(
       new CreateAnalystCommand(loggedUser.id, name, email)
+    );
+  }
+
+  async update(loggedUser: User, request: UpdateAnalystRequest) {
+    const { id, name, email } = request;
+    return await this.executeCommand(
+      new UpdateAnalystCommand(id, loggedUser.id, name, email)
     );
   }
 

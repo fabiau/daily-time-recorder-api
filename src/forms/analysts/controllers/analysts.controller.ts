@@ -1,8 +1,9 @@
-import { Controller, Post, Body, Get, HttpCode, HttpStatus, Request, ParseIntPipe, Param, Delete } from '@nestjs/common';
+import { Controller, Post, Body, Get, HttpCode, HttpStatus, Request, ParseIntPipe, Param, Delete, Put } from '@nestjs/common';
 import { CreateAnalystRequest } from '../requests/create-analyst.request';
 import { User } from '../../../common/decorators/user.decorator';
 import { AnalystsService } from '../services/analysts.service';
 import { ApiResponse, ApiBearerAuth, ApiImplicitParam } from '@nestjs/swagger';
+import { UpdateAnalystRequest } from '../requests/update-analyst.request';
 
 @Controller('analysts')
 @ApiBearerAuth()
@@ -14,6 +15,14 @@ export class AnalystsController {
   @ApiResponse({ status: 400, description: 'E-mail is already registered for an user\'s analyst.'})
   async create(@User() loggedUser, @Body() request: CreateAnalystRequest) {
     return await this.analystsService.create(loggedUser, request);
+  }
+
+  @Put()
+  @ApiResponse({ status: 201, description: 'The record has been successfully updated.'})
+  @ApiResponse({ status: 400, description: 'E-mail is already registered for an user\'s analyst.'})
+  @ApiResponse({ status: 404, description: 'Not found. Analyst wasn\'t found for user.'})
+  async update(@User() loggedUser, @Body() request: UpdateAnalystRequest) {
+    return await this.analystsService.update(loggedUser, request);
   }
 
   @Get()
