@@ -42,7 +42,7 @@ export class AuthService extends BaseService {
 
   async createToken(user: User): Promise<AuthSuccessResponse> {
     return await this.executeCommand(
-      new CreateTokenCommand(user.id, user.username, user.email)
+      new CreateTokenCommand(user)
     );
   }
 

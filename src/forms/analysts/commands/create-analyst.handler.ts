@@ -22,7 +22,7 @@ export class CreateAnalystHandler extends BaseCommandHandler<CreateAnalystComman
     const existingAnalyst =
       await this.analystRepository.findOne({ email: analyst.email, userId: analyst.userId });
     if (existingAnalyst)
-      throw new BadRequestException('Já existe um analista cadastrado com esse e-mail.');
+      throw new BadRequestException('The e-mail is being already used by another analyst you registered.');
 
     const insertResult = await this.analystRepository.insert(analyst);
     return Object.assign({ id: insertResult.identifiers[0].id }, analyst);
