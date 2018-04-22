@@ -1,7 +1,6 @@
 import { ICommand, ICommandHandler } from "@nestjs/cqrs";
-import { CommandResult } from "./command-result";
-import { CommandFailureResult } from "./command-failure-result";
-import { CommandFullfiledResult } from "./command-fulfilled-result";
+import { CommandResult, CommandFailureResult, CommandFullfiledResult, CommandUncaughtErrorResult, CommandCaughtErrorResult } from ".";
+import { HttpException } from "@nestjs/core";
 
 export abstract class BaseCommandHandler<T extends ICommand> implements ICommandHandler<T> {
   async execute(command: T, resolve: (value?: any) => void) {
@@ -10,7 +9,11 @@ export abstract class BaseCommandHandler<T extends ICommand> implements ICommand
         await this.executeCommand(command)
       ));
     } catch (error) {
-      resolve(new CommandFailureResult(error))
+      if (parseInt(error.status)) {
+        resolve(new CommandCaughtErrorResult(error));
+      } else {
+        resolve(new CommandUncaughtErrorResult(error))
+      }
     }
   }
   async abstract executeCommand(command: T) : Promise<any>;

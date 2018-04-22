@@ -7,6 +7,7 @@ import { CommandBus } from "@nestjs/cqrs";
 import { CreateAnalystRequest } from "../requests/create-analyst.request";
 import { User } from "../../../users/entities/user.entity";
 import { CreateAnalystCommand } from "../commands/create-analyst.command";
+import { DeleteAnalystCommand } from "../commands/delete-analyst.command";
 
 @Component()
 export class AnalystsService extends BaseService {
@@ -32,7 +33,13 @@ export class AnalystsService extends BaseService {
   async findById(loggedUser: User, id: number): Promise<Analyst> {
     const analyst = await this.anlystRepository.findOne({ id, userId: +loggedUser.id });
     if (!analyst)
-      throw new NotFoundException('O analista informado não existe.');
+      throw new NotFoundException('The analyst doesn\'t exist.');
     return analyst;
+  }
+
+  async delete(loggedUser: User, id: number): Promise<Analyst> {
+    return await this.executeCommand(
+      new DeleteAnalystCommand(loggedUser.id, id)
+    );
   }
 }

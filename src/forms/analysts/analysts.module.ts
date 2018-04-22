@@ -7,8 +7,9 @@ import { CQRSModule, CommandBus } from '@nestjs/cqrs';
 import { AnalystsService } from './services/analysts.service';
 import { CreateAnalystHandler } from './commands/create-analyst.handler';
 import { ModuleRef } from '@nestjs/core';
+import { DeleteAnalystHandler } from './commands/delete-analyst.handler';
 
-export const CommandHandlers = [CreateAnalystHandler];
+export const CommandHandlers = [CreateAnalystHandler, DeleteAnalystHandler];
 
 @Module({
   imports: [
