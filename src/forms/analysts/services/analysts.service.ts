@@ -1,4 +1,4 @@
-import { Component } from "@nestjs/common";
+import { Component, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Analyst } from "../entities/analyst.entity";
 import { Repository } from "typeorm";
@@ -23,5 +23,16 @@ export class AnalystsService extends BaseService {
     return await this.executeCommand(
       new CreateAnalystCommand(loggedUser.id, name, email)
     );
+  }
+
+  async findAll(loggedUser: User): Promise<Analyst[]> {
+    return await this.anlystRepository.find({ userId: +loggedUser.id });
+  }
+
+  async findById(loggedUser: User, id: number): Promise<Analyst> {
+    const analyst = await this.anlystRepository.findOne({ id, userId: +loggedUser.id });
+    if (!analyst)
+      throw new NotFoundException('O analista informado não existe.');
+    return analyst;
   }
 }

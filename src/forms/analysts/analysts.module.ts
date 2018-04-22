@@ -33,7 +33,7 @@ export class AnalystsModule implements NestModule {
   public configure(consumer: MiddlewaresConsumer) {
     consumer
       .apply(passport.authenticate('jwt', { session: false }))
-      .forRoutes({ path: '/analysts', method: RequestMethod.ALL });
+      .forRoutes({ path: '/analysts*', method: RequestMethod.ALL });
   }
 
   onModuleInit() {
